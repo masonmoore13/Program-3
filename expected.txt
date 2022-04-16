@@ -1,0 +1,24 @@
+[bond, caveman, daredevil, antman]
+0      1        2          3
+
+4 vertices, 7 edges 
+0: 1
+1: 
+2: 0, 1, 3
+3: 0, 1, 2
+
+
+The most popular one is caveman
+The top follower is daredevil
+Is Bond considered an influencer? true
+Graph reciprocity: 0.29
+Shortest path from antman to caveman has 1 edge(s): [antman|caveman]
+Shortest path from bond to daredevil has 2147483647 edge(s): [NONE]
+Users reachable from antman: [caveman, daredevil, bond]
+Users reachable from bond: [caveman]
+Users reachable from caveman: []
+Users reachable from daredevil: [caveman, antman, bond] 
+
+removed antman caveman
+
+names Array: [bond, caveman, daredevil, antman]
