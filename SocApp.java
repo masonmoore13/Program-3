@@ -50,6 +50,7 @@ public class SocApp {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println(myGraph.toString());
     }
 
     public String mostPopular() {
@@ -127,29 +128,65 @@ public class SocApp {
     // Gets the numbers of users that user1 follows
     public int numUsersFollowed(String user1) {
         return myGraph.getAdjacent(namesArray.indexOf(user1)).size();
+
     }
 
+    /*
+     * distance = 0;
+     * distance(user1, user2)
+     * if user1 follows user 2:
+     * Solution = found, distance++
+     * else
+     * for(i = 0; i<user1s followers)
+     * distance(user1s followers[i], user2)
+     * 
+     * if(solution not found)
+     * distance = integer.max_value
+     * return distance;
+     */
     int distance(String user1, String user2) {
         // Base case: If user1 follows user2, the shortest path is 1
-        int distance = 0;
+        int distance = Integer.MAX_VALUE;
         if (follows(user1, user2)) {
-            return 1;
-        }
-        // else if user1 doesnt follow user2, check if anyone that user1 follows is ad
-        // follower of user2
-        // loop through people user1 follows(getAdj) - check if follows(thatUser, user2)
-        for (int i = 0; i < numUsersFollowed(user1); i++) {
-            Set<Integer> tempFollows = myGraph.getAdjacent(i);
-            if ((tempFollows.contains(namesArray.indexOf(user2)))) {
-                distance = 2;
-            } else {
-                distance++;
+            distance = 1;
+        } else {
+            for (int i = 0; i < numUsersFollowed(user1); i++) {
+                Set<Integer> tempFollows = myGraph.getAdjacent(namesArray.indexOf(user1));
+                Integer[] followArray = new Integer[tempFollows.size()];
+                int j = 0;
+                for (int thisInt : tempFollows) {
+                    followArray[j++] = thisInt;
+                }
+                if (follows(namesArray.get(followArray[i]), user2)) {
+                    distance = 2;
+                } else {
+                    distance = 3;
+                }
             }
         }
-
-        
-
         return distance;
+    }
+
+    public String path(String user1, String user2) {
+        String path = "[NONE}";
+        if (follows(user1, user2)) {
+            path = "[" + user1 + "|" + user2 + "]";
+        } else {
+            for (int i = 0; i < numUsersFollowed(user1); i++) {
+                Set<Integer> tempFollows = myGraph.getAdjacent(namesArray.indexOf(user1));
+                Integer[] followArray = new Integer[tempFollows.size()];
+                int j = 0;
+                for (int thisInt : tempFollows) {
+                    followArray[j++] = thisInt;
+                }
+                if (follows(namesArray.get(followArray[i]), user2)) {
+                    path += (namesArray.get(followArray[i]) + " ");
+                } else {
+                    path = "fish";
+                }
+            }
+        }
+        return path;
     }
 
     public static void main(String[] args) {
@@ -162,11 +199,11 @@ public class SocApp {
         // spynet.isInfluencer("bond"));
         // System.out.printf("Graph reciprocity: %4.2f\n", spynet.reciprocity());
 
-        System.out.println(spynet.distance(spies[0], spies[2]));
+        // System.out.println(spynet.distance(spies[0], spies[2]));
 
-        // System.out.printf("Shortest path from %s to %s has %d edge(s): %s\n",
-        // spies[0], spies[2], spynet.distance(spies[0], spies[2]),
-        // spynet.path(spies[0], spies[2]));
+        System.out.printf("Shortest path from %s to %s has %d edge(s): %s\n",
+                spies[0], spies[2], spynet.distance(spies[0], spies[2]),
+                spynet.path(spies[0], spies[2]));
 
         // System.out.printf("Shortest path from %s to %s has %d edge(s): %s\n",
         // spies[1], spies[3], spynet.distance(spies[1], spies[3]),
