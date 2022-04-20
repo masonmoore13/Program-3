@@ -106,6 +106,8 @@ public class SocApp {
         return numSymmetric / (myGraph.edges());
     }
 
+    //All people that user follows are reachable
+    //Add all users that each of those users follow to the reachable set 
     public Set<String> reachable(String user) {
         HashSet<String> reachable = new HashSet<String>();
         Set<Integer> followers = myGraph.getAdjacent(namesArray.indexOf(user));
