@@ -193,17 +193,17 @@ public class SocApp {
 
         // System.out.println(spynet.distance(spies[0], spies[2]));
 
-        System.out.printf("Shortest path from %s to %s has %d edge(s): %s\n",
-                spies[0], spies[2], spynet.distance(spies[0], spies[2]),
-                spynet.path(spies[0], spies[2]));
+        // System.out.printf("Shortest path from %s to %s has %d edge(s): %s\n",
+        //         spies[0], spies[2], spynet.distance(spies[0], spies[2]),
+        //         spynet.path(spies[0], spies[2]));
 
         // System.out.printf("Shortest path from %s to %s has %d edge(s): %s\n",
         // spies[1], spies[3], spynet.distance(spies[1], spies[3]),
         // spynet.path(spies[1], spies[3]));
 
-        // for (String spy : spies) {
-        // System.out.printf("Users reachable from %s: %s\n", spy,
-        // spynet.reachable(spy));
-        // }
+        for (String spy : spies) {
+        System.out.printf("Users reachable from %s: %s\n", spy,
+        spynet.reachable(spy));
+        }
     }
 }
