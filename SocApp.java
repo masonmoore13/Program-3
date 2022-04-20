@@ -131,19 +131,16 @@ public class SocApp {
 
     }
 
-    /*
-     * distance = 0;
-     * distance(user1, user2)
-     * if user1 follows user 2:
-     * Solution = found, distance++
-     * else
-     * for(i = 0; i<user1s followers)
-     * distance(user1s followers[i], user2)
-     * 
-     * if(solution not found)
-     * distance = integer.max_value
-     * return distance;
-     */
+    public Integer[] getFollowed(String user) {
+        Set<Integer> tempFollows = myGraph.getAdjacent(namesArray.indexOf(user));
+        Integer[] followArray = new Integer[tempFollows.size()];
+        int j = 0;
+        for (int thisInt : tempFollows) {
+            followArray[j++] = thisInt;
+        }
+        return followArray;
+    }
+
     int distance(String user1, String user2) {
         // Base case: If user1 follows user2, the shortest path is 1
         int distance = Integer.MAX_VALUE;
@@ -151,16 +148,11 @@ public class SocApp {
             distance = 1;
         } else {
             for (int i = 0; i < numUsersFollowed(user1); i++) {
-                Set<Integer> tempFollows = myGraph.getAdjacent(namesArray.indexOf(user1));
-                Integer[] followArray = new Integer[tempFollows.size()];
-                int j = 0;
-                for (int thisInt : tempFollows) {
-                    followArray[j++] = thisInt;
-                }
-                if (follows(namesArray.get(followArray[i]), user2)) {
+                if (follows(namesArray.get(getFollowed(user1)[i]), user2)) {
                     distance = 2;
-                } else {
-                    distance = 3;
+                }
+                else{
+                    distance=3;
                 }
             }
         }
