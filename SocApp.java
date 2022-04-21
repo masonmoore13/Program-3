@@ -109,12 +109,14 @@ public class SocApp {
     //All people that user follows are reachable
     //Add all users that each of those users follow to the reachable set 
     public Set<String> reachable(String user) {
-        HashSet<String> reachable = new HashSet<String>();
-        Set<Integer> followers = myGraph.getAdjacent(namesArray.indexOf(user));
-        for (int i : followers) {
-            reachable.add(namesArray.get(i));
+        HashSet<String> reachables = new HashSet<String>();
+        Set<Integer> followed = myGraph.getAdjacent(namesArray.indexOf(user));
+        for (int i : followed) {
+            reachables.add(namesArray.get(i));
         }
-        return reachable;
+        System.out.println(Arrays.toString(getFollowed(user)));
+        
+        return reachables;
     }
 
     /*
@@ -130,7 +132,6 @@ public class SocApp {
     // Gets the numbers of users that user1 follows
     public int numUsersFollowed(String user1) {
         return myGraph.getAdjacent(namesArray.indexOf(user1)).size();
-
     }
 
     public Integer[] getFollowed(String user) {
@@ -185,7 +186,7 @@ public class SocApp {
 
     public static void main(String[] args) {
         SocApp spynet = new SocApp("spies.txt");
-        String[] spies = { "antman", "bond", "caveman", "daredevil" };
+        String[] spies = { "bond", "caveman", "daredevil", "antman"};
 
         // System.out.println("The most popular one is " + spynet.mostPopular());
         // System.out.println("The top follower is " + spynet.topFollower());
