@@ -26,10 +26,30 @@ names Array: [bond, caveman, daredevil, antman]
 [Microsoft, Inventec, Kodak, Sony, Qualcomm, B&N, Apple, HTC, Samsung, 
 LG, Amazon, Foxconn, Motorola, Nokia]
 
-[Microsoft Amazon, Microsoft HTC, Microsoft Inventec, Microsoft Foxconn, 
-Microsoft B&N, HTC Apple, Motorola Microsoft, Microsoft Motorola, Motorola Apple, 
-Apple HTC, Apple Motorola, Apple Samsung, Apple Nokia, Nokia Apple, Nokia Qualcomm, 
-Qualcomm Nokia, Samsung Kodak, Kodak Samsung, Kodak Apple, Kodak LG, LG Kodak, Sony LG, 
-Samsung Apple]
+Microsoft Amazon
+Microsoft HTC
+Microsoft Inventec
+Microsoft Foxconn 
+Microsoft B&N
+HTC Apple
+Motorola Microsoft
+Microsoft Motorola
+Motorola Apple
+Apple HTC
+Apple Motorola
+Apple Samsung
+Apple Nokia
+Nokia Apple
+Nokia Qualcomm
+Qualcomm Nokia
+Samsung Kodak
+Kodak Samsung
+Kodak Apple
+Kodak LG
+LG Kodak
+Sony LG
+Samsung Apple
+
+
 Reachable from Apple: [HTC, Samsung, Motorola, Nokia]
 Reachable from Sony : [LG]

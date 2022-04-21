@@ -31,6 +31,10 @@ public class SocApp {
             }
             // Turn the list of names into a set to remove duplicates
             namesSet = new HashSet<String>(tempArray);
+
+            System.out.println(tempArray);
+            System.out.println(namesSet);
+
             for (String x : namesSet) {
                 namesArray.add(x);
             }
@@ -43,9 +47,10 @@ public class SocApp {
                 myGraph.addVertex(i);
             }
             // Add each pair of relationships to the graph
-            for (int i = 0; i < tempArray.size(); i += 2) {
-                myGraph.addEdge(namesArray.indexOf(tempArray.get(i)), namesArray.indexOf(tempArray.get(i + 1)));
-            }
+
+            // for (int i = 0; i < tempArray.size(); i += 2) {
+            //     myGraph.addEdge(namesArray.indexOf(tempArray.get(i)), namesArray.indexOf(tempArray.get(i + 1)));
+            // }
             sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -106,17 +111,26 @@ public class SocApp {
         return numSymmetric / (myGraph.edges());
     }
 
-    //All people that user follows are reachable
-    //Add all users that each of those users follow to the reachable set 
+    // All people that user follows are reachable
+    // Add all users that each of those users follow to the reachable set
     public Set<String> reachable(String user) {
-        HashSet<String> reachables = new HashSet<String>();
-        Set<Integer> followed = myGraph.getAdjacent(namesArray.indexOf(user));
-        for (int i : followed) {
-            reachables.add(namesArray.get(i));
+        Set<Integer> reachablesInt = new HashSet<Integer>();
+        HashSet<String> reachable = new HashSet<String>();
+
+        for (int f : getFollowed(user)) {
+            reachablesInt.add(f);
         }
-        System.out.println(Arrays.toString(getFollowed(user)));
-        
-        return reachables;
+        for (int f : reachablesInt) {
+            Integer[] add = getFollowed(namesArray.get(f));
+            for (int j : add) {
+                reachablesInt.add(j);
+            }
+        }
+        for (int f : reachablesInt) {
+            if (!(f == namesArray.indexOf(user)))
+                reachable.add(namesArray.get(f));
+        }
+        return reachable;
     }
 
     /*
@@ -153,9 +167,8 @@ public class SocApp {
             for (int i = 0; i < numUsersFollowed(user1); i++) {
                 if (follows(namesArray.get(getFollowed(user1)[i]), user2)) {
                     distance = 2;
-                }
-                else{
-                    distance=3;
+                } else {
+                    distance = 3;
                 }
             }
         }
@@ -186,7 +199,9 @@ public class SocApp {
 
     public static void main(String[] args) {
         SocApp spynet = new SocApp("spies.txt");
-        String[] spies = { "bond", "caveman", "daredevil", "antman"};
+        // String[] spies = { "bond", "caveman", "daredevil", "antman" };
+
+        // System.out.println("reach : " + spynet.reachable("Microsoft"));
 
         // System.out.println("The most popular one is " + spynet.mostPopular());
         // System.out.println("The top follower is " + spynet.topFollower());
@@ -197,16 +212,16 @@ public class SocApp {
         // System.out.println(spynet.distance(spies[0], spies[2]));
 
         // System.out.printf("Shortest path from %s to %s has %d edge(s): %s\n",
-        //         spies[0], spies[2], spynet.distance(spies[0], spies[2]),
-        //         spynet.path(spies[0], spies[2]));
+        // spies[0], spies[2], spynet.distance(spies[0], spies[2]),
+        // spynet.path(spies[0], spies[2]));
 
         // System.out.printf("Shortest path from %s to %s has %d edge(s): %s\n",
         // spies[1], spies[3], spynet.distance(spies[1], spies[3]),
         // spynet.path(spies[1], spies[3]));
 
-        for (String spy : spies) {
-        System.out.printf("Users reachable from %s: %s\n", spy,
-        spynet.reachable(spy));
-        }
+        // for (String spy : spies) {
+        //     System.out.printf("Users reachable from %s: %s\n", spy,
+        //             spynet.reachable(spy));
+        // }
     }
 }
