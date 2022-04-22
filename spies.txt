@@ -1,7 +1,7 @@
 Microsoft Amazon
 Microsoft HTC
 Microsoft Inventec
-Microsoft Foxconn 
+Microsoft Foxconn
 Microsoft B&N
 HTC Apple
 Motorola Microsoft

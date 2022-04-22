@@ -16,14 +16,9 @@ public class SocApp {
         File file = new File(filename);
         try {
             Scanner sc = new Scanner(file);
-            Scanner sc2 = new Scanner(file);
             // Read all names into a string
             while (sc.hasNextLine()) {
                 names += (sc.nextLine() + " ");
-            }
-            // Read each line into a pair of one-directional relationships
-            while (sc2.hasNextLine()) {
-                relationships.add(sc2.nextLine());
             }
             // Add the string of names to a temp array
             for (String name : names.split(" ")) {
@@ -31,31 +26,25 @@ public class SocApp {
             }
             // Turn the list of names into a set to remove duplicates
             namesSet = new HashSet<String>(tempArray);
-
-            System.out.println(tempArray);
-            System.out.println(namesSet);
-
             for (String x : namesSet) {
-                namesArray.add(x);
-            }
-            // Assign an ID for each person (DELETE IF NOT USED)
-            for (int i = 0; i < namesArray.size(); i++) {
-                namesIdMap.put(namesArray.get(i), i);
+                if (!x.isEmpty()) {
+                    namesArray.add(x);
+                }
             }
             // Initialize the graph with the ID's
             for (int i = 0; i < namesArray.size(); i++) {
                 myGraph.addVertex(i);
             }
             // Add each pair of relationships to the graph
-
-            // for (int i = 0; i < tempArray.size(); i += 2) {
-            //     myGraph.addEdge(namesArray.indexOf(tempArray.get(i)), namesArray.indexOf(tempArray.get(i + 1)));
-            // }
+            for (int i = 0; i < tempArray.size(); i += 2) {
+                myGraph.addEdge(namesArray.indexOf(tempArray.get(i)), namesArray.indexOf(tempArray.get(i + 1)));
+            }
             sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println(myGraph.toString());
+
+        // System.out.println(myGraph.toString());
     }
 
     public String mostPopular() {
@@ -111,22 +100,27 @@ public class SocApp {
         return numSymmetric / (myGraph.edges());
     }
 
-    // All people that user follows are reachable
-    // Add all users that each of those users follow to the reachable set
     public Set<String> reachable(String user) {
-        Set<Integer> reachablesInt = new HashSet<Integer>();
+        Set<Integer> reachableInts = new HashSet<Integer>();
         HashSet<String> reachable = new HashSet<String>();
+        ArrayList<Integer> temp = new ArrayList<>();
 
-        for (int f : getFollowed(user)) {
-            reachablesInt.add(f);
+        for (int i : getFollowed(user)) {
+            reachableInts.add(i);
         }
-        for (int f : reachablesInt) {
-            Integer[] add = getFollowed(namesArray.get(f));
-            for (int j : add) {
-                reachablesInt.add(j);
+
+        for (int i = 0; i < namesArray.size(); i++) {
+            for (int j : reachableInts) {
+                for (int k : getFollowed(namesArray.get(j))) {
+                    temp.add(k);
+                }
             }
+            for (int j : temp)
+                reachableInts.add(j);
         }
-        for (int f : reachablesInt) {
+
+        // Converts the set of integers to user names
+        for (int f : reachableInts) {
             if (!(f == namesArray.indexOf(user)))
                 reachable.add(namesArray.get(f));
         }
@@ -148,9 +142,9 @@ public class SocApp {
         return myGraph.getAdjacent(namesArray.indexOf(user1)).size();
     }
 
-    public Integer[] getFollowed(String user) {
+    public int[] getFollowed(String user) {
         Set<Integer> tempFollows = myGraph.getAdjacent(namesArray.indexOf(user));
-        Integer[] followArray = new Integer[tempFollows.size()];
+        int[] followArray = new int[tempFollows.size()];
         int j = 0;
         for (int thisInt : tempFollows) {
             followArray[j++] = thisInt;
@@ -163,7 +157,9 @@ public class SocApp {
         int distance = Integer.MAX_VALUE;
         if (follows(user1, user2)) {
             distance = 1;
-        } else {
+        } 
+        
+        else {
             for (int i = 0; i < numUsersFollowed(user1); i++) {
                 if (follows(namesArray.get(getFollowed(user1)[i]), user2)) {
                     distance = 2;
@@ -201,8 +197,6 @@ public class SocApp {
         SocApp spynet = new SocApp("spies.txt");
         // String[] spies = { "bond", "caveman", "daredevil", "antman" };
 
-        // System.out.println("reach : " + spynet.reachable("Microsoft"));
-
         // System.out.println("The most popular one is " + spynet.mostPopular());
         // System.out.println("The top follower is " + spynet.topFollower());
         // System.out.println("Is Bond considered an influencer? " +
@@ -220,8 +214,20 @@ public class SocApp {
         // spynet.path(spies[1], spies[3]));
 
         // for (String spy : spies) {
-        //     System.out.printf("Users reachable from %s: %s\n", spy,
-        //             spynet.reachable(spy));
+        // System.out.printf("Users reachable from %s: %s\n", spy,
+        // spynet.reachable(spy));
+        // }
+
+        String[] spies2 = { "Microsoft", "Inventec", "Kodak", "Sony", "Qualcomm", "B&N", "Apple", "HTC", "Samsung",
+                "LG", "Amazon", "Foxconn", "Motorola", "Nokia" };
+                System.out.println("Distance from: " + spies2[0] + " to " + spies2[1] + ": " + spynet.distance(spies2[0],
+                        spies2[1]));
+        System.out.println("Expected: " + 1);
+
+        // System.out.println(spynet.reachable(spies2[3]));
+        // for (String spy : spies2) {
+        // System.out.printf("Users reachable from %s: %s\n", spy,
+        // spynet.reachable(spy));
         // }
     }
 }
